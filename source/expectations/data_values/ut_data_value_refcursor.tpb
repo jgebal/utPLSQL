@@ -58,10 +58,7 @@ create or replace type body ut_data_value_refcursor as
         null;
       $end
       l_elements_count := l_elements_count + dbms_xmlgen.getNumRowsProcessed(l_ctx);
-      execute immediate
-      'insert into ' || l_ut_owner || '.ut_compound_data_tmp(data_id, item_no, item_data) ' ||
-      'values (:self_guid, :self_row_count, :l_xml)'
-      using in self.data_id, l_set_id, l_xml;       
+      utplsqlowner_dal.ins_ut_compound_data_tmp(self.data_id, l_set_id, l_xml);    
       l_set_id := l_set_id + c_bulk_rows;   
     end loop;
    
@@ -375,7 +372,8 @@ create or replace type body ut_data_value_refcursor as
         a_match_options.join_by.items,
         a_match_options.unordered(),
         a_inclusion_compare,
-        a_is_negated
+        a_is_negated,
+        greatest(self.elements_count,l_other.elements_count)
         );
       l_result := l_result + compare_data( l_self, l_other, l_diff_cursor_text );
     end if;

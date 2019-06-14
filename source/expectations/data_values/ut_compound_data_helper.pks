@@ -75,7 +75,8 @@ create or replace package ut_compound_data_helper authid definer is
     a_join_by_list ut_varchar2_list,
     a_unordered boolean,
     a_inclusion_type boolean,
-    a_is_negated boolean
+    a_is_negated boolean,
+    a_max_count integer
   ) return clob;
  
   procedure insert_diffs_result(a_diff_tab t_diff_tab, a_diff_id raw);

@@ -325,7 +325,8 @@ create or replace package body ut_compound_data_helper is
     a_join_by_list ut_varchar2_list,
     a_unordered boolean,
     a_inclusion_type boolean,
-    a_is_negated boolean
+    a_is_negated boolean,
+    a_max_count integer
   ) return clob is
     l_compare_sql    clob;    
     l_xmltable_stmt  clob;
@@ -335,7 +336,7 @@ create or replace package body ut_compound_data_helper is
     l_not_equal_stmt clob;
     l_where_stmt     clob;
     l_ut_owner       varchar2(250) := ut_utils.ut_owner;
-     
+    
     function get_join_type(a_inclusion_compare in boolean,a_negated in boolean) return varchar2 is
     begin
      return
@@ -356,6 +357,7 @@ create or replace package body ut_compound_data_helper is
     end;
 
   begin
+
     dbms_lob.createtemporary(l_compare_sql, true);   
     --Initiate a SQL template with placeholders
     ut_utils.append_to_clob(l_compare_sql, g_compare_sql_template);

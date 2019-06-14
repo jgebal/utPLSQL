@@ -472,12 +472,6 @@ create or replace package body ut_utils is
     return l_xpath;
   end;
 
-  procedure cleanup_temp_tables is
-  begin
-    execute immediate 'delete from ut_compound_data_tmp';
-    execute immediate 'delete from ut_compound_data_diff_tmp';
-  end;
-
   function to_version(a_version_no varchar2) return t_version is
     l_result             t_version;
     c_version_part_regex constant varchar2(20) := '[0-9]+';

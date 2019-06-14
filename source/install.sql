@@ -34,6 +34,9 @@ alter session set current_schema = &&ut3_owner;
 @@check_sys_grants.sql
 --set define off
 
+prompt Installing objects specifications and tables
+--SPECS
+
 --dbms_output buffer cache table
 @@install_component.sql 'core/ut_dbms_output_cache.sql'
 
@@ -42,7 +45,6 @@ alter session set current_schema = &&ut3_owner;
 @@install_component.sql 'core/types/ut_varchar2_rows.tps'
 @@install_component.sql 'core/types/ut_integer_list.tps'
 @@install_component.sql 'core/types/ut_object_name.tps'
-@@install_component.sql 'core/types/ut_object_name.tpb'
 @@install_component.sql 'core/types/ut_object_names.tps'
 @@install_component.sql 'core/types/ut_key_value_pair.tps'
 @@install_component.sql 'core/types/ut_key_value_pairs.tps'
@@ -51,20 +53,15 @@ alter session set current_schema = &&ut3_owner;
 @@install_component.sql 'core/ut_utils.pks'
 @@install_component.sql 'core/ut_metadata.pks'
 @@install_component.sql 'core/ut_savepoint_seq.sql'
-@@install_component.sql 'core/ut_utils.pkb'
-@@install_component.sql 'core/ut_metadata.pkb'
 @@install_component.sql 'reporters/ut_ansiconsole_helper.pks'
-@@install_component.sql 'reporters/ut_ansiconsole_helper.pkb'
 
 --event manager objects
 @@install_component.sql 'core/events/ut_event_item.tps'
 @@install_component.sql 'core/events/ut_event_listener.tps'
 @@install_component.sql 'core/events/ut_event_manager.pks'
-@@install_component.sql 'core/events/ut_event_manager.pkb'
 
 --core types
 @@install_component.sql 'core/types/ut_run_info.tps'
-@@install_component.sql 'core/types/ut_run_info.tpb'
 @@install_component.sql 'core/types/ut_expectation_result.tps'
 @@install_component.sql 'core/types/ut_expectation_results.tps'
 @@install_component.sql 'core/types/ut_results_counter.tps'
@@ -91,39 +88,36 @@ alter session set current_schema = &&ut3_owner;
 @@install_component.sql 'expectations/data_values/ut_key_anyval_pairs.tps'
 @@install_component.sql 'expectations/data_values/ut_key_anyvalues.tps'
 
+--output buffer table
+@@install_component.sql 'core/output_buffers/ut_output_buffer_info_tmp.sql'
+@@install_component.sql 'core/output_buffers/ut_output_buffer_tmp.sql'
+@@install_component.sql 'core/output_buffers/ut_output_clob_buffer_tmp.sql'
 
 --output buffer base api
 @@install_component.sql 'core/output_buffers/ut_output_data_row.tps'
 @@install_component.sql 'core/output_buffers/ut_output_data_rows.tps'
 @@install_component.sql 'core/output_buffers/ut_output_buffer_base.tps'
---output buffer table
-@@install_component.sql 'core/output_buffers/ut_output_buffer_info_tmp.sql'
-@@install_component.sql 'core/output_buffers/ut_output_buffer_tmp.sql'
-@@install_component.sql 'core/output_buffers/ut_output_clob_buffer_tmp.sql'
+
 --output buffer table api
 @@install_component.sql 'core/output_buffers/ut_output_table_buffer.tps'
-@@install_component.sql 'core/output_buffers/ut_output_table_buffer.tpb'
 @@install_component.sql 'core/output_buffers/ut_output_clob_table_buffer.tps'
-@@install_component.sql 'core/output_buffers/ut_output_clob_table_buffer.tpb'
 
 @@install_component.sql 'core/types/ut_output_reporter_base.tps'
 
 --annotations
+@@install_component.sql 'core/annotations/ut_annotation_cache_seq.sql'
+@@install_component.sql 'core/annotations/ut_annotation_cache_info.sql'
+@@install_component.sql 'core/annotations/ut_annotation_cache.sql'
+
 @@install_component.sql 'core/annotations/ut_annotation.tps'
 @@install_component.sql 'core/annotations/ut_annotations.tps'
 @@install_component.sql 'core/annotations/ut_annotated_object.tps'
 @@install_component.sql 'core/annotations/ut_annotated_objects.tps'
 @@install_component.sql 'core/annotations/ut_annotation_obj_cache_info.tps'
 @@install_component.sql 'core/annotations/ut_annotation_objs_cache_info.tps'
-@@install_component.sql 'core/annotations/ut_annotation_cache_seq.sql'
-@@install_component.sql 'core/annotations/ut_annotation_cache_info.sql'
-@@install_component.sql 'core/annotations/ut_annotation_cache.sql'
 @@install_component.sql 'core/annotations/ut_annotation_cache_manager.pks'
-@@install_component.sql 'core/annotations/ut_annotation_cache_manager.pkb'
 @@install_component.sql 'core/annotations/ut_annotation_parser.pks'
-@@install_component.sql 'core/annotations/ut_annotation_parser.pkb'
 @@install_component.sql 'core/annotations/ut_annotation_manager.pks'
-@@install_component.sql 'core/annotations/ut_annotation_manager.pkb'
 
 --suite builder
 @@install_component.sql 'core/ut_suite_cache_schema.sql'
@@ -131,16 +125,13 @@ alter session set current_schema = &&ut3_owner;
 @@install_component.sql 'core/ut_suite_cache_seq.sql'
 @@install_component.sql 'core/ut_suite_cache.sql'
 @@install_component.sql 'core/ut_suite_cache_manager.pks'
-@@install_component.sql 'core/ut_suite_cache_manager.pkb'
 @@install_component.sql 'core/ut_suite_builder.pks'
-@@install_component.sql 'core/ut_suite_builder.pkb'
+
 --suite manager
 @@install_component.sql 'core/ut_suite_manager.pks'
-@@install_component.sql 'core/ut_suite_manager.pkb'
 
 --expectations execution state interface
 @@install_component.sql 'core/ut_expectation_processor.pks'
-@@install_component.sql 'core/ut_expectation_processor.pkb'
 
 prompt Installing PLSQL profiler objects into &&ut3_owner schema
 @@core/coverage/proftab.sql
@@ -152,8 +143,6 @@ prompt Installing DBMSPLSQL Tables objects into &&ut3_owner schema
 @@core/coverage/dbms_plssqlcode.sql
 
 @@install_component.sql 'core/ut_file_mapper.pks'
-@@install_component.sql 'core/ut_file_mapper.pkb'
-
 
 --gathering coverage
 @@install_component.sql 'core/coverage/ut_coverage_sources_tmp.sql'
@@ -164,30 +153,8 @@ prompt Installing DBMSPLSQL Tables objects into &&ut3_owner schema
 @@install_component.sql 'core/coverage/ut_coverage_block.pks'
 @@install_component.sql 'core/coverage/ut_coverage_profiler.pks'
 @@install_component.sql 'core/coverage/ut_coverage_reporter_base.tps'
-@@install_component.sql 'core/coverage/ut_coverage_helper.pkb'
-@@install_component.sql 'core/coverage/ut_coverage_helper_block.pkb'
-@@install_component.sql 'core/coverage/ut_coverage_helper_profiler.pkb'
-@@install_component.sql 'core/coverage/ut_coverage.pkb'
-@@install_component.sql 'core/coverage/ut_coverage_block.pkb'
-@@install_component.sql 'core/coverage/ut_coverage_profiler.pkb'
-@@install_component.sql 'core/coverage/ut_coverage_reporter_base.tpb'
 
---core type bodies
-@@install_component.sql 'core/types/ut_results_counter.tpb'
-@@install_component.sql 'core/types/ut_suite_item.tpb'
-@@install_component.sql 'core/types/ut_test.tpb'
-@@install_component.sql 'core/types/ut_logical_suite.tpb'
-@@install_component.sql 'core/types/ut_suite.tpb'
-@@install_component.sql 'core/types/ut_suite_context.tpb'
-@@install_component.sql 'core/types/ut_run.tpb'
-@@install_component.sql 'core/types/ut_expectation_result.tpb'
-@@install_component.sql 'core/types/ut_reporter_base.tpb'
-@@install_component.sql 'core/types/ut_output_reporter_base.tpb'
-@@install_component.sql 'core/types/ut_file_mapping.tpb'
-@@install_component.sql 'core/types/ut_executable.tpb'
-@@install_component.sql 'core/types/ut_executable_test.tpb'
 @@install_component.sql 'core/types/ut_console_reporter_base.tps'
-@@install_component.sql 'core/types/ut_console_reporter_base.tpb'
 
 --expectations and matchers
 @@install_component.sql 'expectations/data_values/ut_compound_data_tmp.sql'
@@ -229,10 +196,102 @@ prompt Installing DBMSPLSQL Tables objects into &&ut3_owner schema
 @@install_component.sql 'expectations/matchers/ut_be_empty.tps'
 @@install_component.sql 'expectations/matchers/ut_match.tps'
 @@install_component.sql 'expectations/ut_expectation.tps'
-@@install_component.sql 'expectations/data_values/ut_cursor_column.tpb'
-@@install_component.sql 'expectations/data_values/ut_cursor_details.tpb'
 @@install_component.sql 'expectations/ut_expectation_compound.tps'
 
+--core reporter
+@@install_component.sql 'reporters/ut_documentation_reporter.tps'
+
+--plugin interface API for running utPLSQL
+@@install_component.sql 'api/ut_suite_item_info.tps'
+@@install_component.sql 'api/ut_suite_items_info.tps'
+@@install_component.sql 'api/ut_runner.pks'
+
+--developer interface for expectations and running utPLSQL
+@@install_component.sql 'api/ut.pks'
+
+--additional reporters
+@@install_component.sql 'reporters/ut_debug_reporter.tps'
+@@install_component.sql 'reporters/ut_teamcity_reporter.tps'
+@@install_component.sql 'reporters/ut_teamcity_reporter_helper.pks'
+@@install_component.sql 'reporters/ut_junit_reporter.tps'
+@@install_component.sql 'reporters/ut_tfs_junit_reporter.tps'
+@@install_component.sql 'reporters/ut_xunit_reporter.tps'
+@@install_component.sql 'reporters/ut_sonar_test_reporter.tps'
+
+@@install_component.sql 'reporters/ut_coverage_html_reporter.tps'
+@@install_component.sql 'reporters/ut_coverage_report_html_helper.pks'
+@@install_component.sql 'reporters/ut_coverage_sonar_reporter.tps'
+@@install_component.sql 'reporters/ut_coveralls_reporter.tps'
+@@install_component.sql 'reporters/ut_coverage_cobertura_reporter.tps'
+@@install_component.sql 'reporters/ut_realtime_reporter.tps'
+
+@@install_component.sql 'internal_api/utplsqlowner_dal.pks'
+
+prompt Installing objects body
+--BODY
+
+--common utilities
+@@install_component.sql 'core/types/ut_object_name.tpb'
+@@install_component.sql 'core/ut_utils.pkb'
+@@install_component.sql 'core/ut_metadata.pkb'
+@@install_component.sql 'reporters/ut_ansiconsole_helper.pkb'
+
+--event manager objects
+@@install_component.sql 'core/events/ut_event_manager.pkb'
+
+--core types
+@@install_component.sql 'core/types/ut_run_info.tpb'
+
+--output buffer table api
+@@install_component.sql 'core/output_buffers/ut_output_table_buffer.tpb'
+@@install_component.sql 'core/output_buffers/ut_output_clob_table_buffer.tpb'
+
+--annotations
+@@install_component.sql 'core/annotations/ut_annotation_cache_manager.pkb'
+@@install_component.sql 'core/annotations/ut_annotation_parser.pkb'
+@@install_component.sql 'core/annotations/ut_annotation_manager.pkb'
+
+--suite builder
+@@install_component.sql 'core/ut_suite_cache_manager.pkb'
+@@install_component.sql 'core/ut_suite_builder.pkb'
+
+--suite manager
+@@install_component.sql 'core/ut_suite_manager.pkb'
+
+--expectations execution state interface
+@@install_component.sql 'core/ut_expectation_processor.pkb'
+
+@@install_component.sql 'core/ut_file_mapper.pkb'
+
+
+--gathering coverage
+@@install_component.sql 'core/coverage/ut_coverage_helper.pkb'
+@@install_component.sql 'core/coverage/ut_coverage_helper_block.pkb'
+@@install_component.sql 'core/coverage/ut_coverage_helper_profiler.pkb'
+@@install_component.sql 'core/coverage/ut_coverage.pkb'
+@@install_component.sql 'core/coverage/ut_coverage_block.pkb'
+@@install_component.sql 'core/coverage/ut_coverage_profiler.pkb'
+@@install_component.sql 'core/coverage/ut_coverage_reporter_base.tpb'
+
+--core type bodies
+@@install_component.sql 'core/types/ut_results_counter.tpb'
+@@install_component.sql 'core/types/ut_suite_item.tpb'
+@@install_component.sql 'core/types/ut_test.tpb'
+@@install_component.sql 'core/types/ut_logical_suite.tpb'
+@@install_component.sql 'core/types/ut_suite.tpb'
+@@install_component.sql 'core/types/ut_suite_context.tpb'
+@@install_component.sql 'core/types/ut_run.tpb'
+@@install_component.sql 'core/types/ut_expectation_result.tpb'
+@@install_component.sql 'core/types/ut_reporter_base.tpb'
+@@install_component.sql 'core/types/ut_output_reporter_base.tpb'
+@@install_component.sql 'core/types/ut_file_mapping.tpb'
+@@install_component.sql 'core/types/ut_executable.tpb'
+@@install_component.sql 'core/types/ut_executable_test.tpb'
+@@install_component.sql 'core/types/ut_console_reporter_base.tpb'
+
+--expectations and matchers
+@@install_component.sql 'expectations/data_values/ut_cursor_column.tpb'
+@@install_component.sql 'expectations/data_values/ut_cursor_details.tpb'
 @@install_component.sql 'expectations/matchers/ut_matcher_options_items.tpb'
 @@install_component.sql 'expectations/matchers/ut_matcher_options.tpb'
 @@install_component.sql 'expectations/data_values/ut_data_value.tpb'
@@ -274,47 +333,32 @@ prompt Installing DBMSPLSQL Tables objects into &&ut3_owner schema
 @@install_component.sql 'expectations/data_values/ut_key_anyvalues.tpb'
 
 --core reporter
-@@install_component.sql 'reporters/ut_documentation_reporter.tps'
 @@install_component.sql 'reporters/ut_documentation_reporter.tpb'
 
 --plugin interface API for running utPLSQL
-@@install_component.sql 'api/ut_suite_item_info.tps'
-@@install_component.sql 'api/ut_suite_items_info.tps'
-@@install_component.sql 'api/ut_runner.pks'
 @@install_component.sql 'api/ut_runner.pkb'
 
 --developer interface for expectations and running utPLSQL
-@@install_component.sql 'api/ut.pks'
 @@install_component.sql 'api/ut.pkb'
 
 --additional reporters
-@@install_component.sql 'reporters/ut_debug_reporter.tps'
 @@install_component.sql 'reporters/ut_debug_reporter.tpb'
-@@install_component.sql 'reporters/ut_teamcity_reporter.tps'
-@@install_component.sql 'reporters/ut_teamcity_reporter_helper.pks'
 @@install_component.sql 'reporters/ut_teamcity_reporter_helper.pkb'
 @@install_component.sql 'reporters/ut_teamcity_reporter.tpb'
-@@install_component.sql 'reporters/ut_junit_reporter.tps'
 @@install_component.sql 'reporters/ut_junit_reporter.tpb'
-@@install_component.sql 'reporters/ut_tfs_junit_reporter.tps'
 @@install_component.sql 'reporters/ut_tfs_junit_reporter.tpb'
-@@install_component.sql 'reporters/ut_xunit_reporter.tps'
 @@install_component.sql 'reporters/ut_xunit_reporter.tpb'
-@@install_component.sql 'reporters/ut_sonar_test_reporter.tps'
 @@install_component.sql 'reporters/ut_sonar_test_reporter.tpb'
 
-@@install_component.sql 'reporters/ut_coverage_html_reporter.tps'
-@@install_component.sql 'reporters/ut_coverage_report_html_helper.pks'
 @@install_component.sql 'reporters/ut_coverage_report_html_helper.pkb'
 @@install_component.sql 'reporters/ut_coverage_html_reporter.tpb'
-@@install_component.sql 'reporters/ut_coverage_sonar_reporter.tps'
 @@install_component.sql 'reporters/ut_coverage_sonar_reporter.tpb'
-@@install_component.sql 'reporters/ut_coveralls_reporter.tps'
 @@install_component.sql 'reporters/ut_coveralls_reporter.tpb'
-@@install_component.sql 'reporters/ut_coverage_cobertura_reporter.tps'
 @@install_component.sql 'reporters/ut_coverage_cobertura_reporter.tpb'
-@@install_component.sql 'reporters/ut_realtime_reporter.tps'
 @@install_component.sql 'reporters/ut_realtime_reporter.tpb'
+
+@@install_component.sql 'internal_api/utplsqlowner_dal.pkb'
+
 
 @@install_component.sql 'api/be_between.syn'
 @@install_component.sql 'api/be_empty.syn'

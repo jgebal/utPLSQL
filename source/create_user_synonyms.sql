@@ -103,7 +103,6 @@ create or replace synonym &ut3_user..ut_file_mapping for &&ut3_owner..ut_file_ma
 create or replace synonym &ut3_user..ut_file_mapper for &&ut3_owner..ut_file_mapper;
 create or replace synonym &ut3_user..ut_key_value_pairs for &&ut3_owner..ut_key_value_pairs;
 create or replace synonym &ut3_user..ut_key_value_pair for &&ut3_owner..ut_key_value_pair;
-create or replace synonym &ut3_user..ut_compound_data_tmp for &&ut3_owner..ut_cursor_data;
 create or replace synonym &ut3_user..ut_sonar_test_reporter for &&ut3_owner..ut_sonar_test_reporter;
 create or replace synonym &ut3_user..ut_realtime_reporter for &&ut3_owner..ut_realtime_reporter;
 create or replace synonym &ut3_user..dbmspcc_blocks for &&ut3_owner..dbmspcc_blocks;

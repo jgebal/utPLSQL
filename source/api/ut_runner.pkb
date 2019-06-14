@@ -44,7 +44,7 @@ create or replace package body ut_runner is
 
   procedure finish_run(a_run ut_run, a_force_manual_rollback boolean) is
   begin
-    ut_utils.cleanup_temp_tables;
+    utplsqlowner_dal.clean_expectations;
     ut_event_manager.trigger_event(ut_event_manager.gc_finalize, a_run);
     ut_metadata.reset_source_definition_cache;
     ut_utils.read_cache_to_dbms_output();
