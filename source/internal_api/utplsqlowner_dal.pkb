@@ -18,12 +18,12 @@ create or replace package body utplsqlowner_dal as
   function get_ut_compound_data_tmp(a_data_id ut_compound_data_tmp.data_id%type) return t_ut_compound_data_tmp
     pipelined is
     l_rows t_ut_compound_data_tmp;
-    cursor c_get_componund_tmp(cp_data_id ut_compound_data_tmp.data_id%type) is
+    cursor c_get_componund_tmp is
     select t.data_id ,t.item_no ,t.item_data ,t.item_hash ,t.pk_hash , t.duplicate_no
     from ut_compound_data_tmp t
-    where t.data_id = cp_data_id;
+    where t.data_id = a_data_id;
   begin
-    open c_get_componund_tmp(cp_data_id => a_data_id);
+    open c_get_componund_tmp;
     loop
       fetch c_get_componund_tmp bulk collect into l_rows limit gc_fetch_limit;
       exit when l_rows.count = 0;     
@@ -38,17 +38,15 @@ create or replace package body utplsqlowner_dal as
       a_max_rows integer,
       a_result_tab out nocopy ut_utils.t_clob_tab) is 
     l_results       ut_utils.t_clob_tab;
-    cursor c_get_data_tmp(
-      cp_data_id ut_compound_data_tmp.data_id%type, 
-      cp_max_rows integer) is
+    cursor c_get_data_tmp is
     select xmlserialize( content ucd.item_data no indent)
             from ut_compound_data_tmp tmp
             ,xmltable ( '/ROWSET' passing tmp.item_data
             columns item_data xmltype PATH '*'         
-            ) ucd where tmp.data_id = cp_data_id and rownum <= cp_max_rows;  
+            ) ucd where tmp.data_id = a_data_id and rownum <= a_max_rows;  
   begin
       --return first c_max_rows rows
-    open c_get_data_tmp(a_data_id, a_max_rows);
+    open c_get_data_tmp;
     fetch c_get_data_tmp bulk collect into a_result_tab;  
   end;
 
