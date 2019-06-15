@@ -31,6 +31,7 @@ create or replace package body utplsqlowner_dal as
         pipe row(l_rows(idx));
       end loop;   
     end loop;
+    close c_get_componund_tmp;
   end;
 
   procedure get_ut_compound_data_xml(
@@ -48,6 +49,7 @@ create or replace package body utplsqlowner_dal as
       --return first c_max_rows rows
     open c_get_data_tmp;
     fetch c_get_data_tmp bulk collect into a_result_tab;  
+    close c_get_data_tmp;
   end;
 
 end;
