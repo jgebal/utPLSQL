@@ -13,7 +13,6 @@
 # - File: "docs/index.md" with that contains develop docs
 
 # Required ENV Variables
-PAGES_TARGET_BRANCH="gh-pages"
 LATEST_DOCS_BRANCH="develop"
 GITHUB_IO_REPO='utPLSQL/utPLSQL.github.io'
 GITHUB_IO_BRANCH='master'
@@ -32,30 +31,30 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && { [ "${CURRENT_BRANCH}" == "${LATEST
   # Fail if the markdown documentation is not present.
   [[ -f ./${DOCS_DIR}/index.md ]] || { echo "file docs/index.md not found";  exit 1; }
 
-  # Save some useful information
+  # Store latest commit SHA to be used when committing and pushing to github.io repo
   SHA=`git rev-parse --verify HEAD`
 
-  # clone the repository and switch to PAGES_TARGET_BRANCH branch
+  # clone the repository and switch to GITHUB_IO_BRANCH branch
   mkdir github.io
   cd github.io
   git clone --depth 1 https://${github_api_token}@github.com/${GITHUB_IO_REPO} -b ${GITHUB_IO_BRANCH} .
 
   mkdir -p ${GITHUB_IO_DOCS_DIR}
   #clear out develop documentation directory and copy docs contents to it.
-  echo "updating 'develop' directory"
+  echo "updating 'develop' documentation directory"
   mkdir -p ./${GITHUB_IO_DOCS_DIR}/develop
   rm -rf ./${GITHUB_IO_DOCS_DIR}/develop/**./* || exit 0
   cp -a ../${DOCS_DIR}/. ./${GITHUB_IO_DOCS_DIR}/develop
   # If a Tagged Build then copy to it's own directory as well and to the 'latest' release directory
   if [ -n "$TRAVIS_TAG" ]; then
-   echo "Creating directory ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}"
-   mkdir -p ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}
-   rm -rf ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}/**./* || exit 0
-   cp -a ../${DOCS_DIR}/. ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}
-   echo "Populating 'latest' directory"
-   mkdir -p ./${GITHUB_IO_DOCS_DIR}/latest
-   rm -rf latest/**./* || exit 0
-   cp -a ../${DOCS_DIR}/. ./${GITHUB_IO_DOCS_DIR}/latest
+    echo "Creating directory ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}"
+    mkdir -p ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}
+    rm -rf ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}/**./* || exit 0
+    cp -a ../${DOCS_DIR}/. ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}
+    echo "Populating 'latest' directory"
+    mkdir -p ./${GITHUB_IO_DOCS_DIR}/latest
+    rm -rf latest/**./* || exit 0
+    cp -a ../${DOCS_DIR}/. ./${GITHUB_IO_DOCS_DIR}/latest
   fi
   # Stage changes for commit
   git add .
@@ -91,6 +90,6 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && { [ "${CURRENT_BRANCH}" == "${LATEST
   git add .
   git commit -m "Deploy to gh-pages branch: base commit ${SHA}"
   # Now that we're all set up, we can push.
-  git push --quiet origin HEAD:${PAGES_TARGET_BRANCH}
+  git push --quiet origin HEAD:${GITHUB_IO_BRANCH}
 fi
 
