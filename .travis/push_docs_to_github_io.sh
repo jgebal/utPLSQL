@@ -14,7 +14,7 @@
 
 # Required ENV Variables
 LATEST_DOCS_BRANCH="develop"
-GITHUB_IO_REPO='utPLSQL/utPLSQL.github.io'
+GITHUB_IO_REPO='jgebal/jgebal.github.io'
 GITHUB_IO_BRANCH='master'
 GITHUB_IO_DOCS_DIR='utPLSQL'
 DOCS_DIR='docs'
