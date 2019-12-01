@@ -35,26 +35,27 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && { [ "${CURRENT_BRANCH}" == "${LATEST
   SHA=`git rev-parse --verify HEAD`
 
   # clone the repository and switch to GITHUB_IO_BRANCH branch
-  mkdir github.io
-  cd github.io
+  mkdir ${GITHUB_IO_REPO}
+  cd ${GITHUB_IO_REPO}
   git clone --depth 1 https://${github_api_token}@github.com/${GITHUB_IO_REPO} -b ${GITHUB_IO_BRANCH} .
 
   mkdir -p ${GITHUB_IO_DOCS_DIR}
   #clear out develop documentation directory and copy docs contents to it.
   echo "updating 'develop' documentation directory"
-  mkdir -p ./${GITHUB_IO_DOCS_DIR}/develop
-  rm -rf ./${GITHUB_IO_DOCS_DIR}/develop/**./* || exit 0
-  cp -a ../${DOCS_DIR}/. ./${GITHUB_IO_DOCS_DIR}/develop
+  cd ./${GITHUB_IO_DOCS_DIR}
+  mkdir -p ./develop
+  rm -rf ./develop/**./* || exit 0
+  cp -a ../${DOCS_DIR}/. ./develop
   # If a Tagged Build then copy to it's own directory as well and to the 'latest' release directory
   if [ -n "$TRAVIS_TAG" ]; then
-    echo "Creating directory ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}"
-    mkdir -p ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}
-    rm -rf ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}/**./* || exit 0
-    cp -a ../${DOCS_DIR}/. ./${GITHUB_IO_DOCS_DIR}/${UTPLSQL_VERSION}
+    echo "Creating directory ./${UTPLSQL_VERSION}"
+    mkdir -p ./${UTPLSQL_VERSION}
+    rm -rf ./${UTPLSQL_VERSION}/**./* || exit 0
+    cp -a ../${DOCS_DIR}/. ./${UTPLSQL_VERSION}
     echo "Populating 'latest' directory"
-    mkdir -p ./${GITHUB_IO_DOCS_DIR}/latest
+    mkdir -p ./latest
     rm -rf latest/**./* || exit 0
-    cp -a ../${DOCS_DIR}/. ./${GITHUB_IO_DOCS_DIR}/latest
+    cp -a ../${DOCS_DIR}/. ./latest
   fi
   # Stage changes for commit
   git add .
