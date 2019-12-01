@@ -16,8 +16,7 @@
 LATEST_DOCS_BRANCH="develop"
 GITHUB_IO_REPO='jgebal/jgebal.github.io'
 GITHUB_IO_BRANCH='master'
-GITHUB_IO_DOCS_DIR='utPLSQL'
-DOCS_DIR='docs'
+
 #  TRAVIS_* variables are set by travis directly and only need to be if testing externally
 
 # We deploy only when building on develop branch or on TAG (release)
@@ -29,34 +28,34 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && { [ "${CURRENT_BRANCH}" == "${LATEST
   # If a version of the project is not defined
   [[ -n "${UTPLSQL_VERSION}" ]] || { echo "variable UTPLSQL_VERSION is not defines or missing value";  exit 1; }
   # Fail if the markdown documentation is not present.
-  [[ -f ./${DOCS_DIR}/index.md ]] || { echo "file docs/index.md not found";  exit 1; }
+  [[ -f ./docs/index.md ]] || { echo "file docs/index.md not found";  exit 1; }
 
   # Store latest commit SHA to be used when committing and pushing to github.io repo
   SHA=`git rev-parse --verify HEAD`
 
   # clone the repository and switch to GITHUB_IO_BRANCH branch
-  mkdir -p ${GITHUB_IO_REPO}
-  cd ${GITHUB_IO_REPO}
+  mkdir pages
+  cd ./pages
   git clone --depth 1 https://${github_api_token}@github.com/${GITHUB_IO_REPO} -b ${GITHUB_IO_BRANCH} .
 
-  mkdir -p ${GITHUB_IO_DOCS_DIR}
+  mkdir -p utPLSQL
+  cd ./utPLSQL
   #clear out develop documentation directory and copy docs contents to it.
   echo "updating 'develop' documentation directory"
-  mkdir -p ./${GITHUB_IO_DOCS_DIR}/develop
+  mkdir -p ./develop
   rm -rf ./develop/**./* || exit 0
-  cp -a ../${DOCS_DIR}/. ./${GITHUB_IO_DOCS_DIR}/develop
+  cp -a ../../docs/. ./develop
 
-  cd ./${GITHUB_IO_DOCS_DIR}
   # If a Tagged Build then copy to it's own directory as well and to the 'latest' release directory
   if [ -n "$TRAVIS_TAG" ]; then
     echo "Creating directory ./${UTPLSQL_VERSION}"
     mkdir -p ./${UTPLSQL_VERSION}
     rm -rf ./${UTPLSQL_VERSION}/**./* || exit 0
-    cp -a ../${DOCS_DIR}/. ./${UTPLSQL_VERSION}
+    cp -a ../../docs/. ./${UTPLSQL_VERSION}
     echo "Populating 'latest' directory"
     mkdir -p ./latest
-    rm -rf latest/**./* || exit 0
-    cp -a ../${DOCS_DIR}/. ./latest
+    rm -rf ./latest/**./* || exit 0
+    cp -a ../../docs/. ./latest
   fi
   # Stage changes for commit
   git add .
