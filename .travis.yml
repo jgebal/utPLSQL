@@ -124,7 +124,7 @@ jobs:
         - git remote add origin https://${github_api_token}@github.com/${UTPLSQL_REPO}
         - if [[ ! $TRAVIS_TAG ]]; then bash .travis/push_release_version.sh; fi
         - bash .travis/build_docs.sh
-        - bash .travis/push_docs_to_gh_pages.sh
+        - bash .travis/push_docs_to_github_io.sh
       before_deploy:
         - bash .travis/build_release_archive.sh
       deploy:
