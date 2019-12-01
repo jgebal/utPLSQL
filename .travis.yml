@@ -31,6 +31,7 @@ env:
     - UTPLSQL_REPO="utPLSQL/utPLSQL"
     - UTPLSQL_BUILD_NO="${TRAVIS_BUILD_NUMBER:-0}"
     - UTPLSQL_VERSION_PATTERN="v?([0-9]+\.){3}[0-9]+[^']*"
+    # test
     - UTPLSQL_VERSION=$(. .travis/get_project_version.sh)
     - UTPLSQL_BUILD_VERSION=$(. .travis/get_project_build_version.sh)
     - UTPLSQL_SOURCES_DIR='source'
