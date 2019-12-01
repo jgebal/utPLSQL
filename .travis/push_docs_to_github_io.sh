@@ -35,7 +35,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && { [ "${CURRENT_BRANCH}" == "${LATEST
   SHA=`git rev-parse --verify HEAD`
 
   # clone the repository and switch to GITHUB_IO_BRANCH branch
-  mkdir ${GITHUB_IO_REPO}
+  mkdir -p ${GITHUB_IO_REPO}
   cd ${GITHUB_IO_REPO}
   git clone --depth 1 https://${github_api_token}@github.com/${GITHUB_IO_REPO} -b ${GITHUB_IO_BRANCH} .
 
@@ -59,7 +59,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && { [ "${CURRENT_BRANCH}" == "${LATEST
   fi
   # Stage changes for commit
   git add .
-  cd ${GITHUB_IO_DOCS_DIR}
+
   #Check if there are doc changes, if none exit the script
   if [[ -z `git diff HEAD --exit-code` ]]; then
     echo "No changes to docs detected."
