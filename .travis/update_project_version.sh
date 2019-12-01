@@ -3,6 +3,7 @@
 echo Current branch is "${CURRENT_BRANCH}"
 
 echo Update version in project source files
+echo sed -i -r "s/${UTPLSQL_VERSION_PATTERN}/${UTPLSQL_BUILD_VERSION}/" {}
 find ${UTPLSQL_SOURCES_DIR} -type f -name '*' -exec sed -i -r "s/${UTPLSQL_VERSION_PATTERN}/${UTPLSQL_BUILD_VERSION}/" {} \;
 echo Source files updated with version tag: ${UTPLSQL_BUILD_VERSION}
 
